@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call</title>
+    <style>
+        :root {
+            --primary: #427C71;
+            --primary-dark: #40786E;
+            --secondary: #36645C;
+            --dark: #213E39;
+            --accent: #81E9D6;
+            --light: #f8f9fa;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo svg {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23407a6e' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.2;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+            color: var(--accent);
+        }
+        
+        .features {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: var(--secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-img {
+            height: 200px;
+            background-color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feature-img svg {
+            width: 80px;
+            height: 80px;
+            color: white;
+        }
+        
+        .feature-content {
+            padding: 25px;
+        }
+        
+        .feature-content h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-content p {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+        
+        .learn-more {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .learn-more:hover {
+            text-decoration: underline;
+        }
+        
+        .stats {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .stat-item p {
+            opacity: 0.8;
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+        
+        .testimonial-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin: 0 15px;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: var(--secondary);
+            font-size: 14px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: white;
+            opacity: 0.7;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            opacity: 1;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: white;
+            opacity: 0.7;
+            transition: opacity 0.3s, color 0.3s;
+        }
+        
+        .social-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            opacity: 0.7;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <svg width="5171" height="3291" viewBox="0 0 5171 3291" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1668.5 3071.5L0.484614 218.753L822.992 218.753L1645.5 1948L2468.01 218.753L3290.51 218.753L2993.5 1174L2179 1645L2598.5 1894.5L1668.5 3071.5Z" fill="url(#paint0_linear_69_14)"/>
+                        <path d="M2321 1645.02L5170.25 3.3977e-05L5170.25 822.507L3441 1645.02L5170.25 2467.52L5170.25 3290.03L2321 1645.02Z" fill="url(#paint1_linear_69_14)"/>
+                        <defs>
+                        <linearGradient id="paint0_linear_69_14" x1="3290.52" y1="1645.13" x2="0.484739" y2="1645.13" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#80E9D5"/>
+                        <stop offset="1" stop-color="#66C7B7"/>
+                        </linearGradient>
+                        <linearGradient id="paint1_linear_69_14" x1="3745.62" y1="3290.03" x2="3745.63" y2="1.69885e-05" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#80E9D5"/>
+                        <stop offset="1" stop-color="#66C7B7"/>
+                        </linearGradient>
+                        </defs>
+                        </svg>
+                        
+                    Video Call
+                </div>
+                <div class="nav-links">
+                    <a href="#">Hi</a>
+                    <a href="#">Video Call</a>
+                    <a href="#">Please</a>
+                    <a href="#">Video Call</a>
+                    <a href="#">Pl</a>
+                    <a href="#" class="cta-button">Video Call</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content container">
+            <h1>Пожалуйста, пообщайтесь в видеочате в Telegram.</h1>
+            <p>- Daniel Erlyson💔</p>
+            <a href="#" class="cta-button">Start Video Call</a>
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Site by</h2>
+                <p>nu tut vso ponatno</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <svg width="3565" height="2069" viewBox="0 0 3565 2069" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2419 0L1086 1404.27L722 1404.27L1939.5 234.771L1241 234.771L345 2068.77L-9.04288e-05 2068.77L1016.5 0L2419 0Z" fill="white"/>
+                            <path d="M2693.51 708.507L3180.51 14.0073H3317.76H3564.51V882.578V1413.01H3252.51L3012.51 708.507L2606.51 1413.01L2394.51 708.507L1822.01 1413.01H1459.51L2537.51 14.0073H2622.51L2693.51 708.507Z" fill="white"/>
+                            </svg>
+                            
+                    </div>
+                    <div class="feature-content">
+                        <h3>pm</h3>
+                        <p>привет я пеме</p>
+                        <a href="#" class="learn-more">Contact</a>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 10a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h12zm-7 2v3h2v-3h-2zm-5 2v3h2v-3H6zm10 0v3h2v-3h-2zM12 3a4 4 0 0 1 4 4h2a6 6 0 0 0-12 0h2a4 4 0 0 1 4-4z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Sample Text</h3>
+                        <p>Lorem ipsum</p>
+                        <a href="#" class="learn-more">Contact</a>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-img">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2zm0 2a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8zm-5 6h10v4H7v-4z"/>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Nipon</h3>
+                        <p>нипон вы где</p>
+                        <a href="#" class="learn-more">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>10M+</h3>
+                    <p>Daniel Erlysons</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.9%</h3>
+                    <p>Video Call Probability</p>
+                </div>
+                <div class="stat-item">
+                    <h3>150+</h3>
+                    <p>Pisunov v zhope</p>
+                </div>
+                <div class="stat-item">
+                    <h3>4.9/5</h3>
+                    <p>Daniel Erlyson💔 Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Trusted by Daniel Erlyson💔</h2>
+                <p>Пожалуйста, позвоните. - Daniel Erlyson💔</p>
+            </div>
+            
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Hi Video Call Please."</p>
+                <div class="testimonial-author">
+                    <img src="https://pmerrs.netlify.app/ASDASDASDSSAD.png" alt="pm">
+                    <div class="author-info">
+                        <h4>pm</h4>
+                        <p>CEO</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Video Call</h4>
+                    <p>Пожалуйста, позвоните. since 2025</p>
+                    <div class="social-links">
+                        
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Hi</h4>
+                    <ul>
+                        <li><a href="#">Hi</a></li>
+                        <li><a href="#">Video Call</a></li>
+                        <li><a href="#">Please</a></li>
+                        <li><a href="#">Video Call</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Video Call</h4>
+                    <ul>
+                        <li><a href="#">Hi</a></li>
+                        <li><a href="#">Pl</a></li>
+                        <li><a href="#">Video Call</a></li>
+                        <li><a href="#">Please</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Body Parts</h4>
+                    <ul>
+                        <li><a href="#">Piska</a></li>
+                        <li><a href="#">Popka</a></li>
+                        <li><a href="#">Zhopa</a></li>
+                        <li><a href="#">Picun F6</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Video Call. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
